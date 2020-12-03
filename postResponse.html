@@ -1,0 +1,32 @@
+<html><head>
+<script type="text/javascript">
+//parse and organize all QS parameters in a more comfortable way
+var params = {};
+if (location.search.length > 1) {
+    var i, arr = location.search.substr(1).split("&");
+    for (i = 0; i < arr.length; i++) {
+        arr[i] = arr[i].split("=");
+        params[arr[i][0]] = unescape(arr[i][1]);
+    }
+}
+
+//support server answer as JavaScript Object-Literals or JSON:
+//  evaluate the data expression
+try { 
+    eval("params.data = " + params.data); 
+} catch (e) { 
+    params.data = {error: "server response failed with evaluation error: " + e.message
+                  ,data : params.data
+                  }
+}
+
+//invoke the callback on the parent
+try{
+     window.parent[ params.callback ](params.data || "no-data-returned");
+}catch(e){
+     //if something went wrong - at least let's learn about it in the
+     //      console (in addition to the timeout)
+     throw "Problem in passing POST response to host page: \n\n" + e.message;
+}
+</script>
+</head><body></body></html>
