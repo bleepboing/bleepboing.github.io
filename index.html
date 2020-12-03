@@ -1,1 +1,27 @@
-Hello World
+<html>
+	<head>
+	<script type="text/javascript" src="main.js"></script>
+	<style>
+	.noselect {
+		  -webkit-touch-callout: none; /* iOS Safari */
+			-webkit-user-select: none; /* Safari */
+			 -khtml-user-select: none; /* Konqueror HTML */
+			   -moz-user-select: none; /* Old versions of Firefox */
+				-ms-user-select: none; /* Internet Explorer/Edge */
+					user-select: none; /* Non-prefixed version, currently
+										  supported by Chrome, Edge, Opera and Firefox */
+		}
+	</style>
+	</head>
+	<body>
+		<div class="noselect">
+			<p>connection status:</p>
+			<p id="conn_status">disconnected</p>
+			<p>touch status:</p>
+			<p id="touch_status">false</p>
+		</div>
+		<div style="background-color: red; height: 9%; width: 100%; position:fixed; bottom:0px; left:0px">
+		</div>
+		<hr id="line" style="z-index: 10000; visibility:hidden; position: fixed; left:0px">
+	</body>
+</html>
