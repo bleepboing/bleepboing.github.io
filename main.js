@@ -45,7 +45,6 @@ var send_pos = function(e) {
 		} else {
 			pos = Math.floor(255*(1 - (e.pageY / height)/0.9));
 		}
-		console.log(pos);
 	}
 };
 
