@@ -3,7 +3,7 @@ var is_mouse = false;
 var height = 0;
 var width = 0;
 var pos = 0;
-var data = new Uint8Array(50);
+var data = new Uint8Array(500);
 var i = 0;
 var get_timer;
 var send_timer;
@@ -18,8 +18,8 @@ var update_touched = function(t, e) {
 	document.getElementById("line").style.visibility = t ? "visible" : "hidden";
 	send_pos(e);
 	if (t) {
-		get_timer = setInterval(get_data, 1);
-		send_timer = setInterval(send_data, 100);
+		get_timer = setInterval(get_data, 20);
+		send_timer = setInterval(send_data, 250);
 	} else {
 		i = 0;
 		send_data();
@@ -37,6 +37,16 @@ var get_data = function() {
 }
 
 var send_pos = function(e) {
+	if (e.type == "touchmove") {
+		var touch = event.touches[0];
+		var x = touch.pageX;
+		var y = touch.pageY;
+		// or taking offset into consideration
+		var x_2 = touch.pageX - canvas.offsetLeft;
+		var y_2 = touch.pageY - canvas.offsetTop;
+		pos = Math.floor(255*(1 - (y_2 / height)/0.9));
+		return;
+	}
 	if (e.pageY > 0 && e.pageY < height) {
 		document.getElementById("line").style.top = e.pageY + "px";
 		document.getElementById("line").width = width;
@@ -66,7 +76,7 @@ var send_data = function() {
 		data[0] = i;
 		jQuery.ajax({
 		 type: "GET",
-		 url: 'https://shekter.dev/api/data/' + buf2hex(data.buffer),
+		 url: 'https://shekter.dev/api/data/' + buf2hex(data.slice(0, i).buffer),
 		 dataType: "jsonp",
 		 jsonpCallback: 'callback',
 		 cache: false,
@@ -79,40 +89,6 @@ var send_data = function() {
 			 //alert("error");
 		 }
 		});
-		/*jQuery.ajax({
-		 type: "GET",
-		 url: 'https://shekter.dev/api/connect',
-		 dataType: "jsonp",
-		 jsonpCallback: 'callback',
-		 cache: false,
-		 crossDomain: true,
-		 processData: true,
-		 success: function (data) {
-			 //alert(JSON.stringify(data));
-		 },
-		 error: function (XMLHttpRequest, textStatus, errorThrown) {
-			 alert("error");
-		 }
-		});
-		
-		$.ajax({
-			type: 'POST',
-			url: 'https://shekter.dev/api/connect',
-			crossDomain: true,
-			data: '{"some":"json"}',
-			dataType: 'json',
-			success: function(responseData, textStatus, jqXHR) {
-				//var value = responseData.someKey;
-			},
-			error: function (responseData, textStatus, errorThrown) {
-				alert('POST failed.');
-			}
-		});
-		
-		req.open('POST', 'https://shekter.dev/api/data');
-		req.setRequestHeader('X-PINGOTHER', 'pingpong');
-		req.setRequestHeader('content-type', 'application/json;charset=UTF-8');
-		req.send(JSON.stringify(data.slice(0, i + 1)));*/
 		i = 0;
 	}
 };
