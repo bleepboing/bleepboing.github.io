@@ -37,23 +37,22 @@ var get_data = function() {
 }
 
 var send_pos = function(e) {
-	if (e.type == "touchmove") {
-		var touch = e.touches[0];
-		var x = e.changedTouches[0].pageX;
-		var y = e.changedTouches[0].pageY;
-		// or taking offset into consideration
-		//var x_2 = e.changedTouches[0].pageX - canvas.offsetLeft;
-		//var y_2 = e.changedTouches[0].pageY - canvas.offsetTop;
-		pos = Math.floor(255*(1 - (y / height)/0.9));
-		return;
-	}
-	if (e.pageY > 0 && e.pageY < height) {
-		document.getElementById("line").style.top = e.pageY + "px";
+    if(e.type == 'touchstart' || e.type == 'touchmove' || e.type == 'touchend' || e.type == 'touchcancel'){
+        var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+        //x = touch.pageX;
+        y = touch.pageY;
+    } else if (e.type == 'mousedown' || e.type == 'mouseup' || e.type == 'mousemove' || e.type == 'mouseover'|| e.type=='mouseout' || e.type=='mouseenter' || e.type=='mouseleave') {
+        //x = e.clientX;
+        y = e.clientY;
+    }
+
+	if (y > 0 && y < height) {
+		document.getElementById("line").style.top = y + "px";
 		document.getElementById("line").width = width;
-		if (e.pageY > height * 0.9) {
+		if (y > height * 0.9) {
 			pos = 0
 		} else {
-			pos = Math.floor(255*(1 - (e.pageY / height)/0.9));
+			pos = Math.floor(255*(1 - (y / height)/0.9));
 		}
 	}
 };
