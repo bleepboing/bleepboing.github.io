@@ -38,7 +38,7 @@ var get_data = function() {
 
 var send_pos = function(e) {
 	if (e.type == "touchmove") {
-		var touch = event.touches[0];
+		var touch = e.touches[0];
 		var x = touch.pageX;
 		var y = touch.pageY;
 		// or taking offset into consideration
