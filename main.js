@@ -7,6 +7,7 @@ var data = new Uint8Array(500);
 var i = 0;
 var get_timer;
 var send_timer;
+var last_pos = -1;
 var update_touched = function(t, e) {
 	var body = document.body,
 		html = document.documentElement;
@@ -18,12 +19,13 @@ var update_touched = function(t, e) {
 	document.getElementById("line").style.visibility = t ? "visible" : "hidden";
 	send_pos(e);
 	if (t) {
-		get_timer = setInterval(get_data, 20);
-		send_timer = setInterval(send_data, 250);
+		//get_timer = setInterval(get_data, 20);
+		//send_timer = setInterval(send_data, 250);
+		send_timer = setInterval(send_data, 100);
 	} else {
 		i = 0;
 		send_data();
-		clearInterval(get_timer);
+		//clearInterval(get_timer);
 		clearInterval(send_timer);
 		var highestTimeoutId = setTimeout(";");
 		for (var i = 0 ; i < highestTimeoutId ; i++) {
@@ -62,20 +64,15 @@ function buf2hex(buffer) { // buffer is an ArrayBuffer
 }
 
 var send_data = function() {
-	if (i != 0) {
-		var req = new XMLHttpRequest();
-		req.onreadystatechange = function() {
-			if (this.readyState == 4 && this.status == 200) {
-				document.getElementById("conn_status").innerText = "good";
-				i = 0;
-			} else {
-				document.getElementById("conn_status").innerText = "waiting";
-			}
-		}
-		data[0] = i;
+	if (last_pos == pos) {
+		return;
+	}
+	//if (i != 0) {
+		//data[0] = i;
 		jQuery.ajax({
 		 type: "GET",
-		 url: 'https://shekter.dev/api/data/' + buf2hex(data.slice(0, i).buffer),
+		 //url: 'https://shekter.dev/api/data/' + buf2hex(data.slice(0, i).buffer),
+		 url: 'https://shekter.dev/api/output/' + pos,
 		 dataType: "jsonp",
 		 jsonpCallback: 'callback',
 		 cache: false,
@@ -88,8 +85,9 @@ var send_data = function() {
 			 //alert("error");
 		 }
 		});
-		i = 0;
-	}
+		last_pos = pos;
+		//i = 0;
+	//}
 };
 
 document.addEventListener("mousedown", e => {
