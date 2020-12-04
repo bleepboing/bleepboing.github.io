@@ -4,26 +4,59 @@
 	<script type="text/javascript" src="main.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<style>
-	.noselect {
-		  -webkit-touch-callout: none; /* iOS Safari */
-			-webkit-user-select: none; /* Safari */
-			 -khtml-user-select: none; /* Konqueror HTML */
-			   -moz-user-select: none; /* Old versions of Firefox */
-				-ms-user-select: none; /* Internet Explorer/Edge */
-					user-select: none; /* Non-prefixed version, currently
-										  supported by Chrome, Edge, Opera and Firefox */
+		.noselect {
+			  -webkit-touch-callout: none; /* iOS Safari */
+				-webkit-user-select: none; /* Safari */
+				 -khtml-user-select: none; /* Konqueror HTML */
+				   -moz-user-select: none; /* Old versions of Firefox */
+					-ms-user-select: none; /* Internet Explorer/Edge */
+						user-select: none; /* Non-prefixed version, currently
+											  supported by Chrome, Edge, Opera and Firefox */
+			}
+		html,
+		body {
+			overscroll-behavior-y: contain;
+		}
+		.body,
+		.wrapper {
+		  /* Break the flow */
+		  position: absolute;
+		  top: 0px;
+
+		  /* Give them all the available space */
+		  width: 100%;
+		  height: 100%;
+
+		  /* Remove the margins if any */
+		  margin: 0;
+
+		  /* Allow them to scroll down the document */
+		  overflow-y: hidden;
+		}
+
+		.body {
+		  /* Sending body at the bottom of the stack */
+		  z-index: 1;
+		}
+
+		.wrapper {
+		  /* Making the wrapper stack above the body */
+		  z-index: 2;
 		}
 	</style>
 	</head>
-	<body scroll="no" style="overflow: hidden">
-		<div class="noselect">
-			<p>connection status:</p>
-			<p id="conn_status">disconnected</p>
-			<p>touch status:</p>
-			<p id="touch_status">false</p>
+	<body scroll="no" style="overflow: hidden" class="body">
+		<div class="wrapper">
+			<div class="noselect">
+				<p>connection status:</p>
+				<p id="conn_status">disconnected</p>
+				<p>touch status:</p>
+				<p id="touch_status">false</p>
+			</div>
+			<div style="background-color: red; height: 9%; width: 100%; position:fixed; bottom:0px; left:0px">
+			</div>
+			<hr id="line" style="z-index: 10000; visibility:hidden; position: fixed; left:0px">
 		</div>
-		<div style="background-color: red; height: 9%; width: 100%; position:fixed; bottom:0px; left:0px">
-		</div>
-		<hr id="line" style="z-index: 10000; visibility:hidden; position: fixed; left:0px">
 	</body>
+	
 </html>
