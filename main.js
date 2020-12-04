@@ -39,12 +39,12 @@ var get_data = function() {
 var send_pos = function(e) {
 	if (e.type == "touchmove") {
 		var touch = e.touches[0];
-		var x = touch.pageX;
-		var y = touch.pageY;
+		var x = e.changedTouches[0].pageX;
+		var y = e.changedTouches[0].pageY;
 		// or taking offset into consideration
-		var x_2 = touch.pageX - canvas.offsetLeft;
-		var y_2 = touch.pageY - canvas.offsetTop;
-		pos = Math.floor(255*(1 - (y_2 / height)/0.9));
+		//var x_2 = e.changedTouches[0].pageX - canvas.offsetLeft;
+		//var y_2 = e.changedTouches[0].pageY - canvas.offsetTop;
+		pos = Math.floor(255*(1 - (y / height)/0.9));
 		return;
 	}
 	if (e.pageY > 0 && e.pageY < height) {
