@@ -158,6 +158,7 @@ window.addEventListener("load", function(e){
      processData: true,
      success: function (data) {
          //alert(JSON.stringify(data));
+		 document.getElementById("conn_status").innerText = "connected";
      },
      error: function (XMLHttpRequest, textStatus, errorThrown) {
          alert("error");
